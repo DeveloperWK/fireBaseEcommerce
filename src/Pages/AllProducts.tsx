@@ -55,12 +55,18 @@ const AllProducts = () => {
     deleteProduct(deleteId);
   };
   const editHandler = (editId: string) => {
+
     console.log(editId);
     navigate(`/edit-product/${editId}`);
+
   };
+
   if (isDeleting) return toast.info("Deleting...");
   if (isDeletingError) return toast.error((deletingError as Error).message);
-  if (deleteSuccess) return toast.success("Product Deleted Successfully");
+  if (deleteSuccess) {
+    toast.success("Product Deleted Successfully");
+  }
+
   // Aikhan Ar Product ase nh Akbar akta remove korle
   return (
     <>
