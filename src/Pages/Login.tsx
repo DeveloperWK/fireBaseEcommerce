@@ -27,9 +27,10 @@ const Login = () => {
         navigate("/");
       }
     } catch (error) {
-      setErrorMessage(`Invalid email or password  </br> ${(error as Error).message}`);
+      setErrorMessage(`Invalid email or password ${(error as Error).message}`);
+      console.log(error, errorMessage);
       setIsLoading(false);
-      toast.error(errorMessage);
+      toast.error("Invalid email or password");
     }
   };
 
@@ -66,10 +67,11 @@ const Login = () => {
           <Label htmlFor="remember">Remember me</Label>
         </div>
         {isLoading && toast.info("Loading...")}
+
         <button type="submit" disabled={isLoading}>
           <CustomButton color={"purple"}>Login </CustomButton>
         </button>
-
+        {errorMessage && toast.error("Invalid email or password")}
       </form>
     </section>
   );
