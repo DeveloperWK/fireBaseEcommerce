@@ -1,6 +1,6 @@
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { Checkbox, Label, TextInput } from "flowbite-react";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import CustomButton from "../Components/CustomButton";
@@ -33,7 +33,14 @@ const Login = () => {
       toast.error("Invalid email or password");
     }
   };
-
+  useEffect(() => {
+  if(isLoading){
+    toast.success("Loading...");
+  }
+  if (errorMessage) {
+    toast.error(errorMessage);
+  }
+})
   return (
     <section className="m-auto mt-10 max-w-md">
       <form className="flex max-w-md flex-col gap-4" onSubmit={submitHandler}>
@@ -71,7 +78,7 @@ const Login = () => {
         <button type="submit" disabled={isLoading}>
           <CustomButton color={"purple"}>Login </CustomButton>
         </button>
-        {errorMessage && toast.error("Invalid email or password")}
+        {/* {errorMessage ? toast.error("Invalid email or password") : ""} */}
       </form>
     </section>
   );

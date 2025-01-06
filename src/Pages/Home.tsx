@@ -1,4 +1,5 @@
 import { Button, Card } from "flowbite-react";
+import { useEffect } from "react";
 import { Link } from "react-router";
 import { toast } from "react-toastify";
 import { useGetProductsQuery } from "../Features/firebaseApiSlice";
@@ -7,6 +8,15 @@ const Products = () => {
   const { data, isLoading, isError, error } = useGetProductsQuery(
     {}
   ) as ReturnType<typeof useGetProductsQuery>; // get products from API
+
+  useEffect(() => {
+    if (isLoading) {
+      toast.info("Loading...");
+    }
+    if (isError) {
+      toast.error((error as Error).message);
+    }
+  }, [isLoading, isError]);
   if (data?.length === 0) {
     return (
       <div>
@@ -16,6 +26,7 @@ const Products = () => {
       </div>
     );
   }
+
   interface Product {
     id: string;
     image: string;
@@ -26,11 +37,10 @@ const Products = () => {
     stock: number;
     tags: string;
   }
+
   return (
     <>
       <section className="flex gap-5 p-5">
-        {isLoading && toast.info("Loading...")}
-        {isError && toast.error((error as Error).message)}
         {!isLoading &&
           !isError &&
           data &&

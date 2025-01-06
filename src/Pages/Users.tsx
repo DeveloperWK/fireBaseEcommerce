@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { toast } from "react-toastify";
 import { useGetUsersQuery } from "../Features/firebaseApiSlice";
 
@@ -10,12 +11,14 @@ const Users = () => {
   } = useGetUsersQuery({}, { refetchOnMountOrArgChange: true }) as ReturnType<
     typeof useGetUsersQuery
   >;
-  if (isLoading) {
-    return toast.info("Users Loading...");
-  }
-  if (isError) {
-    return toast.error(`Users Data Error ${error.message}`);
-  }
+  useEffect(() => {
+    if (isLoading) {
+      toast.info("Users Loading...");
+    }
+    if (isError) {
+      toast.error(`Users Data Error ${error.message}`);
+    }
+  }, [isLoading, isError, error]);
   interface User {
     id: string;
     email: string;

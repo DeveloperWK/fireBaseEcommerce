@@ -1,4 +1,5 @@
 import { Button } from "flowbite-react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import {
@@ -24,9 +25,6 @@ const AllProducts = () => {
     }
   ) as ReturnType<typeof useGetProductsQuery>;
 
-  // useEffect(() => {
-  //   refetch();
-  // }, [data]);
   const [
     deleteProduct,
 
@@ -38,8 +36,15 @@ const AllProducts = () => {
     },
   ] = useDeleteProductMutation();
   const navigate = useNavigate();
-  // const [deleteId, setDeleteId] = useState("");
-  if (isLoading) return toast.info("Products Loading..."); //Loading toast false holeo hote thake kn
+  useEffect(() => {
+    if (isLoading) {
+      toast.info("Products Loading...");
+    }
+    if (deleteSuccess) {
+      toast.success("Product Deleted Successfully");
+    }
+  }, [isLoading, deleteSuccess]);
+
   if (isError) return toast.error(error.message);
   if (data?.length === 0) {
     return (
@@ -55,17 +60,12 @@ const AllProducts = () => {
     deleteProduct(deleteId);
   };
   const editHandler = (editId: string) => {
-
     console.log(editId);
     navigate(`/edit-product/${editId}`);
-
   };
 
   if (isDeleting) return toast.info("Deleting...");
   if (isDeletingError) return toast.error((deletingError as Error).message);
-  if (deleteSuccess) {
-    toast.success("Product Deleted Successfully");
-  }
 
   // Aikhan Ar Product ase nh Akbar akta remove korle
   return (

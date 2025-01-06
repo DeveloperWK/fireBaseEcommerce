@@ -1,4 +1,5 @@
 import { Button } from "flowbite-react";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router";
 import { toast } from "react-toastify";
@@ -25,10 +26,16 @@ const Product = () => {
     dispatch(addToCart(product));
     toast.success("Product added to cart");
   };
+  useEffect(() => {
+    if (isLoading) {
+      toast.info("Product Loading...");
+    }
+    if (isError) {
+      toast.error((error as Error).message);
+    }
+  }, [isLoading, isError, error]);
   return (
     <>
-      {isLoading && toast.info("Loading...")}
-      {isError && toast.error(error.message)}
       <section className="container border border-gray-400  rounded-lg p-4 w-3/4 mx-auto mt-4 shadow bg-gray-100">
         {product && (
           <div className="flex items-center justify-between">
