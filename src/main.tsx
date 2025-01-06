@@ -16,5 +16,5 @@ createRoot(document.getElementById("root")!).render(
         <ToastContainer />
       </Provider>
     </AuthProvider>
-  </StrictMode>
+ </StrictMode>
 );

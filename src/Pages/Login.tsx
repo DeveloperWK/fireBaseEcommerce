@@ -8,7 +8,7 @@ import { auth } from "../Firebase/firebase.config";
 
 const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+  const [isError, setIsError] = useState(false);
   const navigate = useNavigate();
   const emailInputRef = useRef<HTMLInputElement>(null);
   const passwordInputRef = useRef<HTMLInputElement>(null);
@@ -23,24 +23,25 @@ const Login = () => {
       if (res) {
         toast.success("Login Successfully");
         setIsLoading(false);
-        setErrorMessage("");
+        setIsError(false);
         navigate("/");
       }
     } catch (error) {
-      setErrorMessage(`Invalid email or password ${(error as Error).message}`);
-      console.log(error, errorMessage);
+      setIsError(true);
+      console.error(error);
+    } finally {
       setIsLoading(false);
-      toast.error("Invalid email or password");
     }
   };
   useEffect(() => {
-  if(isLoading){
-    toast.success("Loading...");
-  }
-  if (errorMessage) {
-    toast.error(errorMessage);
-  }
-})
+    if (isLoading) {
+      toast.info("Loading...");
+    }
+    if (isError) {
+      toast.error("Invalid Email or Password");
+      setIsError(false);
+    }
+  }, [isLoading, isError]);
   return (
     <section className="m-auto mt-10 max-w-md">
       <form className="flex max-w-md flex-col gap-4" onSubmit={submitHandler}>
@@ -73,12 +74,9 @@ const Login = () => {
           <Checkbox id="remember" />
           <Label htmlFor="remember">Remember me</Label>
         </div>
-        {isLoading && toast.info("Loading...")}
-
         <button type="submit" disabled={isLoading}>
           <CustomButton color={"purple"}>Login </CustomButton>
         </button>
-        {/* {errorMessage ? toast.error("Invalid email or password") : ""} */}
       </form>
     </section>
   );
