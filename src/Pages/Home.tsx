@@ -16,7 +16,7 @@ const Products = () => {
     if (isError) {
       toast.error((error as Error).message);
     }
-  }, [isLoading, isError]);
+  }, [isLoading, isError, error]);
   if (data?.length === 0) {
     return (
       <div>
